@@ -1,0 +1,5 @@
+mutagen==1.46.0
+spotipy==2.22.0
+toml==0.10.2
+tqdm==4.64.0
+deezer-python==5.8.1

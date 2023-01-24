@@ -47,7 +47,7 @@ def main():
 
     # Ask for album or track link
     link = input("Enter album or track link (Spotify or Deezer): ")
-    start_time = time.time()
+    
     if "spotify" in link:
         # Retrieve Spotify metadata
         try:
@@ -101,7 +101,7 @@ def main():
         confirmation = input("Do you want to continue? (Y/n)\n") or "y"
     else:
         confirmation = "y"
-
+    start_time = time.time()
     if confirmation.lower() == "y":
         if "spotify" in link:
             for track_metadata, flac_file in tqdm(zip(tracks_metadata, flac_files), total=len(tracks_metadata), desc="Processing files"):

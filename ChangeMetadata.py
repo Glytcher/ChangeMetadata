@@ -20,12 +20,6 @@ def main():
     client_id = config['SpotifyAPI']['client_id']
     client_secret = config['SpotifyAPI']['client_secret']
 
-    # Check if client_id and client_secret are provided
-    if not client_id or not client_secret:
-        print("Error: Spotify client_id and/or client_secret empty")
-        input("Press Enter key to exit...")
-        sys.exit()
-
     # Check if system arguments are provided
     if len(sys.argv) < 2:
         print("Error: Please provide a folder as a command line argument. You can do this by dragging and dropping a folder onto the python file.")
@@ -49,6 +43,12 @@ def main():
     link = input("Enter album or track link (Spotify or Deezer): ")
     
     if "spotify" in link:
+        # Check if client_id and client_secret are provided
+        if not client_id or not client_secret:
+            print("Error: Spotify client_id and/or client_secret empty")
+            input("Press Enter key to exit...")
+            sys.exit()
+
         # Retrieve Spotify metadata
         try:
             if 'album' in link:

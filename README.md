@@ -6,7 +6,9 @@ This script allows you to add Spotify/Deezer metadata to your FLAC files using S
 - Album title
 - Track title
 - Release date
-- Total tracks (Only for Spotify at the moment)
+- Total tracks
+- Track number
+- Disc number
 
 ## Requirements
 
@@ -49,5 +51,5 @@ You can configure the script by editing the `config.toml` file. The following op
 ## Todo
 
 - [x] Add support for Deezer
-- [ ] Add disc metadata when available
+- [x] Add disc metadata
 - [ ] Handle extended/alternative versions of albums not available on Spotify/Deezer

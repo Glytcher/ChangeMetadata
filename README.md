@@ -6,6 +6,7 @@ This script allows you to add Spotify/Deezer metadata to your FLAC files using S
 - Album title
 - Track title
 - Release date
+- Total tracks (Only for Spotify at the moment)
 
 ## Requirements
 
@@ -19,7 +20,7 @@ This script allows you to add Spotify/Deezer metadata to your FLAC files using S
 
 1. Clone the repository and navigate to the folder
 2. Install the dependencies by running `pip install -r requirements.txt`
-3. Create a `config.toml` file and add your Spotify API credentials to it. See the Configuration section below for more information.
+3. Create a `config.toml` file next to the main .py file and add your Spotify API credentials to it. See the Configuration section below for more information.
 4. Run the script by providing the folder containing the FLAC files as a command line argument, e.g. `python ChangeMetadata.py "path/to/folder"`. This can also be done by dragging the folder onto the script file.
 5. Provide the Spotify link of the album when prompted
 6. The script will display the metadata that will be added and prompt for confirmation before applying

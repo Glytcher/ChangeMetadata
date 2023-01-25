@@ -22,7 +22,7 @@ def main():
 
     # Check if client_id and client_secret are provided
     if not client_id or not client_secret:
-        print("Error: client_id and/or client_secret not found in config file.")
+        print("Error: Spotify client_id and/or client_secret empty")
         input("Press any key to exit...")
         sys.exit()
 
@@ -66,8 +66,11 @@ def main():
             tracks_metadata = album_metadata['tracks']['items']
         else:
             track_metadata = sp.track(link)
+            album_metadata = sp.album(track_metadata['album']['id'])
             album_name = track_metadata['album']['name']
             tracks_metadata = [track_metadata]
+        
+        total_tracks = str(album_metadata['total_tracks'])
         album_artists = [artist['name'] for artist in album_metadata['artists']]
         release_date = album_metadata['release_date']
 
@@ -111,6 +114,7 @@ def main():
                 audio['title'] = track_metadata['name']
                 audio["ALBUMARTIST"] = album_artists
                 audio['date'] = release_date
+                audio['tracktotal'] = total_tracks
                 audio.save()
                 
         elif "deezer" in link:

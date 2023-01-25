@@ -2,7 +2,7 @@
 
 This script allows you to add Spotify/Deezer metadata to your FLAC files using Spotify/Deezer API. Useful for when you use both Foobar2000 and Spotify/Deezer and want to keep your metadata consistent for use with last.fm scrobbling. The script will add the following metadata to the FLAC files taken from Spotify/Deezer:
 
-- Album & track artist (Correctly handles multiple artists)
+- Album & track artist(s)
 - Album title
 - Track title
 - Release date
@@ -14,7 +14,7 @@ This script allows you to add Spotify/Deezer metadata to your FLAC files using S
 
 - Python 3.9+
 - [Spotipy](https://pypi.org/project/spotipy/)
-- [Deeezer-python](https://pypi.org/project/deezer-python/)
+- [Deezer-python](https://pypi.org/project/deezer-python/)
 - [Mutagen](https://pypi.org/project/mutagen/)
 - Spotify API credentials (client ID and client secret, see [here](https://developer.spotify.com/dashboard/applications) for more information)
 

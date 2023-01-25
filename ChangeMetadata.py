@@ -4,7 +4,6 @@ import sys
 import time
 import toml
 
-
 import spotipy
 from spotipy.oauth2 import SpotifyClientCredentials
 from deezer import Client
@@ -28,20 +27,21 @@ def main():
     else:
         folder = sys.argv[1]
 
-    # load in all FLAC files from folder
+    # Load in all FLAC files from folder
     flac_files = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".flac")]
     if flac_files == []:
         print("No FLAC files found in folder")
         input("Press Enter key to exit...")
         sys.exit()
 
-    # Setup Spotify API using Spotipy
+    # Setup Spotify API using Spotipy and Deezer API client using Deezer-Python
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id, client_secret))
     dz = Client()
 
     # Ask for album or track link
     link = input("Enter album or track link (Spotify or Deezer): ")
     
+    # Check if link is valid and check for Spotify or Deezer
     if "spotify" in link:
         # Check if client_id and client_secret are provided
         if not client_id or not client_secret:
@@ -59,7 +59,7 @@ def main():
             print(f"Error: {e}")
             input("Press any key to exit...")
             sys.exit()
-
+        
         if 'album' in link:
             album_metadata = sp.album(link)
             album_name = album_metadata['name']
@@ -75,14 +75,13 @@ def main():
         release_date = album_metadata['release_date']
         disc_number = str(track_metadata['disc_number'])
         
-
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
         print(f"\033[1;33;40mAlbum artist:\033[0m {', '.join(album_artists)}")
         print(f"\033[1;33;40mRelease date:\033[0m {release_date}")
     
     elif "deezer" in link:
-        # Retrieve Deezer metadata
+        # Get Deezer album ID
         if "http" in link:
             album_id = link.split("/")[-1]
         else:
@@ -94,6 +93,7 @@ def main():
         total_tracks = album.nb_tracks
         release_date = album.release_date
         tracks_metadata = album.get_tracks()
+
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
         print(f"\033[1;33;40mAlbum artist:\033[0m {album_artists}")
@@ -102,11 +102,13 @@ def main():
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
         sys.exit()
+
     # Check config file if user should be asked for confirmation
     if config['Options']['alwaysAskForConformation']:
         confirmation = input("Do you want to continue? (Y/n)\n") or "y"
     else:
         confirmation = "y"
+    # Start timer for processing time
     start_time = time.time()
     if confirmation.lower() == "y":
         if "spotify" in link:
@@ -121,7 +123,6 @@ def main():
                 audio['discnumber'] = disc_number
                 audio['tracknumber'] = str(track_metadata['track_number'])
                 audio.save()
-                
         elif "deezer" in link:
             for track, flac_file in tqdm(zip(tracks_metadata, flac_files), total=len(tracks_metadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
@@ -134,7 +135,10 @@ def main():
                 audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()
+
+    # End timer for processing time
     end_time = time.time()
+    
     print(f"Metadata successfully applied!\nTotal time taken: {end_time - start_time:.2f} seconds")
     input("Press Enter to exit...")
 

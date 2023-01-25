@@ -57,6 +57,8 @@ You can configure the script by editing the `config.toml` file. The following op
 
 ## Todo
 
+Features to add/bugs to fix, in no particular order:
+
 - [x] Add support for Deezer
 - [x] Add disc metadata
 - [ ] Make the config file optional, since you dont need credentials for Deezer

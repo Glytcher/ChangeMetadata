@@ -1,8 +1,8 @@
-# Apply Spotify/Deezer metadata to FLAC files
+# Apply Spotify or Deezer metadata to FLAC files
 
-This script allows you to add Spotify/Deezer metadata to your FLAC files using Spotify/Deezer API. Useful for when you use both Foobar2000 and Spotify/Deezer and want to keep your metadata consistent for use with last.fm scrobbling (E.g. with Foobar2000 and [foo_scrobble](https://github.com/gix/foo_scrobble)).
+This script allows you to add Spotify orDeezer metadata to your FLAC files using Spotify/Deezer API. Useful for when you use both a local music player and Spotify or Deezer and want to keep your metadata consistent for use with Last.fm scrobbling (E.g. with Foobar2000 and [foo_scrobble](https://github.com/gix/foo_scrobble)). Using the metadata from Spotify or Deezer would fix annoying issues like the track artist or song title being different in Spotify or Deezer and your local music player, resulting in inaccurate scrobbles on Last.fm.
 
-This script will add the following metadata to the FLAC files taken from Spotify/Deezer:
+This script will add the following metadata to the FLAC files taken from Spotify or Deezer:
 
 - Album & track artist(s)
 - Album title
@@ -60,4 +60,4 @@ You can configure the script by editing the `config.toml` file. The following op
 - [x] Add support for Deezer
 - [x] Add disc metadata
 - [ ] Make the config file optional, since you dont need credentials for Deezer
-- [ ] Handle extended/alternative versions of albums not available on Spotify/Deezer
+- [ ] Handle extended/alternative versions of albums not available on Spotify or Deezer

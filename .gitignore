@@ -2,4 +2,4 @@
 *.toml
 *.flac
 *.bak
-old/
+*/

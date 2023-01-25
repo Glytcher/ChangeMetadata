@@ -1,12 +1,14 @@
 # Apply Spotify/Deezer metadata to FLAC files
 
-This script allows you to add Spotify/Deezer metadata to your FLAC files using Spotify/Deezer API. Useful for when you use both Foobar2000 and Spotify/Deezer and want to keep your metadata consistent for use with last.fm scrobbling. The script will add the following metadata to the FLAC files taken from Spotify/Deezer:
+This script allows you to add Spotify/Deezer metadata to your FLAC files using Spotify/Deezer API. Useful for when you use both Foobar2000 and Spotify/Deezer and want to keep your metadata consistent for use with last.fm scrobbling (E.g. with Foobar2000 and [foo_scrobble](https://github.com/gix/foo_scrobble)).
+
+This script will add the following metadata to the FLAC files taken from Spotify/Deezer:
 
 - Album & track artist(s)
 - Album title
 - Track title
 - Release date
-- Total tracks
+- Total number of tracks
 - Track number
 - Disc number
 
@@ -14,18 +16,23 @@ This script allows you to add Spotify/Deezer metadata to your FLAC files using S
 
 - Python 3.9+
 - [Spotipy](https://pypi.org/project/spotipy/)
+- [toml](https://pypi.org/project/toml/)
+- [tqdm](https://pypi.org/project/tqdm/)
 - [Deezer-python](https://pypi.org/project/deezer-python/)
 - [Mutagen](https://pypi.org/project/mutagen/)
-- Spotify API credentials (client ID and client secret, see [here](https://developer.spotify.com/dashboard/applications) for more information)
 
-## Usage
+**Optional:**
 
-1. Clone the repository and navigate to the folder
+- If you want to use Spotify, you need Spotify API credentials (client ID and client secret, see [here](https://developer.spotify.com/dashboard/applications) for more information)
+
+## Installation and usage
+
+1. Clone or download the repository and navigate to the folder using the command line
 2. Install the dependencies by running `pip install -r requirements.txt`
-3. Create a `config.toml` file next to the main .py file and add your Spotify API credentials to it. See the Configuration section below for more information.
-4. Run the script by providing the folder containing the FLAC files as a command line argument, e.g. `python ChangeMetadata.py "path/to/folder"`. This can also be done by dragging the folder onto the script file.
-5. Provide the Spotify link of the album when prompted
-6. The script will display the metadata that will be added and prompt for confirmation before applying
+3. Create a `config.toml` file in the same folder as the `ChangeMetadata.py` file and add your Spotify API credentials to it if needed. See the Configuration section below for more information.
+4. Run the script by dragging a folder containing FLAC files onto the script file or by providing the folder as a command line argument, e.g. `python ChangeMetadata.py "path/to/folder"`.
+5. Provide the Spotify or Deezer link/ID of the album or track when prompted
+6. The script will display a summary of the metadata that will be added and prompt for confirmation before applying.
 
 ## Configuration
 
@@ -52,4 +59,5 @@ You can configure the script by editing the `config.toml` file. The following op
 
 - [x] Add support for Deezer
 - [x] Add disc metadata
+- [ ] Make the config file optional, since you dont need credentials for Deezer
 - [ ] Handle extended/alternative versions of albums not available on Spotify/Deezer

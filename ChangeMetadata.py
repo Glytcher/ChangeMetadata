@@ -23,13 +23,13 @@ def main():
     # Check if client_id and client_secret are provided
     if not client_id or not client_secret:
         print("Error: Spotify client_id and/or client_secret empty")
-        input("Press any key to exit...")
+        input("Press Enter key to exit...")
         sys.exit()
 
     # Check if system arguments are provided
     if len(sys.argv) < 2:
         print("Error: Please provide a folder as a command line argument. You can do this by dragging and dropping a folder onto the python file.")
-        input("Press any key to exit...")
+        input("Press Enter key to exit...")
         sys.exit()
     else:
         folder = sys.argv[1]
@@ -38,7 +38,7 @@ def main():
     flac_files = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".flac")]
     if flac_files == []:
         print("No FLAC files found in folder")
-        input("Press any key to exit...")
+        input("Press Enter key to exit...")
         sys.exit()
 
     # Setup Spotify API using Spotipy
@@ -73,6 +73,8 @@ def main():
         total_tracks = str(album_metadata['total_tracks'])
         album_artists = [artist['name'] for artist in album_metadata['artists']]
         release_date = album_metadata['release_date']
+        disc_number = str(track_metadata['disc_number'])
+        
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
@@ -89,6 +91,7 @@ def main():
         album = dz.get_album(album_id)
         album_name = album.title
         album_artists = ', '.join(str(x) for x in list([contributor.name for contributor in album.contributors]))
+        total_tracks = album.nb_tracks
         release_date = album.release_date
         tracks_metadata = album.get_tracks()
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
@@ -97,9 +100,9 @@ def main():
         print(f"\033[1;33;40mRelease date:\033[0m {release_date}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
-        input("Press any key to exit...")
+        input("Press Enter to exit...")
         sys.exit()
-            # Check config file if user should be asked for confirmation
+    # Check config file if user should be asked for confirmation
     if config['Options']['alwaysAskForConformation']:
         confirmation = input("Do you want to continue? (Y/n)\n") or "y"
     else:
@@ -115,6 +118,8 @@ def main():
                 audio["ALBUMARTIST"] = album_artists
                 audio['date'] = release_date
                 audio['tracktotal'] = total_tracks
+                audio['discnumber'] = disc_number
+                audio['tracknumber'] = str(track_metadata['track_number'])
                 audio.save()
                 
         elif "deezer" in link:
@@ -125,6 +130,9 @@ def main():
                 audio['title'] = track.title
                 audio["ALBUMARTIST"] = album_artists
                 audio['date'] = str(release_date)
+                audio['tracktotal'] = str(total_tracks)
+                audio['discnumber'] = str(track.disk_number)
+                audio['tracknumber'] = str(track.track_position)
                 audio.save()
     end_time = time.time()
     print(f"Metadata successfully applied!\nTotal time taken: {end_time - start_time:.2f} seconds")

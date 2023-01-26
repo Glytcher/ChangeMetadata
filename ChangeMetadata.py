@@ -38,6 +38,9 @@ def main():
     sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(clientId, clientSecret))
     dz = Client()
 
+    # Print current folder and total FLAC files in folder
+    print(f"\033[1;32;40mCurrent folder:\033[0m {(folder.split(chr(92))[-1])}")
+
     # Ask for album or track link
     link = input("Enter album or track link (Spotify or Deezer): ")
     
@@ -75,10 +78,9 @@ def main():
         releaseDate = albumMetadata['release_date']
         
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
-        print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
+        print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {', '.join(albumArtists)}")
-        print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
-    
+        print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
     elif "deezer" in link:
         # Get Deezer album ID
         if "http" in link:
@@ -94,9 +96,9 @@ def main():
         tracksMetadata = album.get_tracks()
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
-        print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
+        print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {albumArtists}")
-        print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
+        print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
@@ -104,7 +106,7 @@ def main():
 
     # Check total tracks and FLAC files in folder to check if they match
     if len(tracksMetadata) != len(flacFiles):
-        print(f"\033[91mNote:\033[0m         Total tracks in given album ({len(tracksMetadata)}) does not match total FLAC files in folder ({len(flacFiles)})")
+        print(f"\033[91mNote:\033[0m            Total tracks in given album ({len(tracksMetadata)}) does not match total FLAC files in folder ({len(flacFiles)})")
 
     # Check config file if user should be asked for confirmation
     if config['Options']['alwaysAskForConformation']:

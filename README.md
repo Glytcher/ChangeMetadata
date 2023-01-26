@@ -11,6 +11,7 @@ This script will add the following metadata taken from Spotify or Deezer to the 
 - Total number of tracks
 - Track number
 - Disc number
+- Total number of discs
 
 ## Requirements
 

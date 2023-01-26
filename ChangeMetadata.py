@@ -76,11 +76,13 @@ def main():
         totalTracks = str(albumMetadata['total_tracks'])
         albumArtists = [artist['name'] for artist in albumMetadata['artists']]
         releaseDate = albumMetadata['release_date']
-        
+        totalDiscs = str(max(track['disc_number'] for track in tracksMetadata))
+
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {', '.join(albumArtists)}")
         print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
+        print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
     elif "deezer" in link:
         # Get Deezer album ID
         if "http" in link:
@@ -94,11 +96,13 @@ def main():
         totalTracks = str(album.nb_tracks)
         releaseDate = str(album.release_date)
         tracksMetadata = album.get_tracks()
+        totalDiscs = str(max(track.disk_number for track in tracksMetadata))
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {albumArtists}")
         print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
+        print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
@@ -127,6 +131,7 @@ def main():
                 audio["ALBUMARTIST"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
+                audio['totaldiscs'] = totalDiscs
                 audio['discnumber'] = str(trackMetadata['disc_number'])
                 audio['tracknumber'] = str(trackMetadata['track_number'])
                 audio.save()
@@ -139,6 +144,7 @@ def main():
                 audio["ALBUMARTIST"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
+                audio['totaldiscs'] = totalDiscs
                 audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()

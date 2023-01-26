@@ -40,8 +40,8 @@ This script will add the following metadata to the FLAC files taken from Spotify
 
 ```toml
 [SpotifyAPI]
-client_id = ""      # Your client ID taken form the Spotify Developer Dashboard
-client_secret = ""  # Your client secret taken from the Spotify Developer Dashboard
+clientId = ""      # Your client ID taken form the Spotify Developer Dashboard
+clientSecret = ""  # Your client secret taken from the Spotify Developer Dashboard
 
 [Options]
 alwaysAskForConformation = true # If set to true, the program will always ask for confirmation before applying the metadata changes
@@ -63,3 +63,4 @@ Features to add/bugs to fix, in no particular order:
 - [x] Add disc metadata
 - [ ] Make the config file optional, since you dont need credentials for Deezer
 - [ ] Handle extended/alternative versions of albums not available on Spotify or Deezer
+- [ ] Add support for MP3 files

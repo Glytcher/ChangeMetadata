@@ -16,8 +16,8 @@ def main():
     with open('config.toml', 'r') as f:
         config = toml.load(f)
 
-    client_id = config['SpotifyAPI']['client_id']
-    client_secret = config['SpotifyAPI']['client_secret']
+    clientId = config['SpotifyAPI']['clientId']
+    clientSecret = config['SpotifyAPI']['clientSecret']
 
     # Check if system arguments are provided
     if len(sys.argv) < 2:
@@ -28,14 +28,14 @@ def main():
         folder = sys.argv[1]
 
     # Load in all FLAC files from folder
-    flac_files = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".flac")]
-    if flac_files == []:
+    flacFiles = [os.path.join(folder, file) for file in os.listdir(folder) if file.endswith(".flac")]
+    if flacFiles == []:
         print("No FLAC files found in folder")
         input("Press Enter key to exit...")
         sys.exit()
 
     # Setup Spotify API using Spotipy and Deezer API client using Deezer-Python
-    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(client_id, client_secret))
+    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(clientId, clientSecret))
     dz = Client()
 
     # Ask for album or track link
@@ -43,60 +43,60 @@ def main():
     
     # Check if link is valid and check for Spotify or Deezer
     if "spotify" in link:
-        # Check if client_id and client_secret are provided
-        if not client_id or not client_secret:
-            print("Error: Spotify client_id and/or client_secret empty")
+        # Check if clientId and clientSecret are provided
+        if not clientId or not clientSecret:
+            print("Error: Spotify clientId and/or clientSecret empty")
             input("Press Enter key to exit...")
             sys.exit()
 
         # Retrieve Spotify metadata
         try:
             if 'album' in link:
-                album_metadata = sp.album(link)
+                albumMetadata = sp.album(link)
             if 'track' in link:
-                track_metadata = sp.track(link)
+                trackMetadata = sp.track(link)
         except spotipy.client.SpotifyException as e:
             print(f"Error: {e}")
             input("Press any key to exit...")
             sys.exit()
         
         if 'album' in link:
-            album_metadata = sp.album(link)
-            album_name = album_metadata['name']
-            tracks_metadata = album_metadata['tracks']['items']
+            albumMetadata = sp.album(link)
+            albumName = albumMetadata['name']
+            tracksMetadata = albumMetadata['tracks']['items']
         else:
-            track_metadata = sp.track(link)
-            album_metadata = sp.album(track_metadata['album']['id'])
-            album_name = track_metadata['album']['name']
-            tracks_metadata = [track_metadata]
+            trackMetadata = sp.track(link)
+            albumMetadata = sp.album(trackMetadata['album']['id'])
+            albumName = trackMetadata['album']['name']
+            tracksMetadata = [trackMetadata]
         
-        total_tracks = str(album_metadata['total_tracks'])
-        album_artists = [artist['name'] for artist in album_metadata['artists']]
-        release_date = album_metadata['release_date']
+        totalTracks = str(albumMetadata['total_tracks'])
+        albumArtists = [artist['name'] for artist in albumMetadata['artists']]
+        releaseDate = albumMetadata['release_date']
         
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
-        print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
-        print(f"\033[1;33;40mAlbum artist:\033[0m {', '.join(album_artists)}")
-        print(f"\033[1;33;40mRelease date:\033[0m {release_date}")
+        print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
+        print(f"\033[1;33;40mAlbum artist:\033[0m {', '.join(albumArtists)}")
+        print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
     
     elif "deezer" in link:
         # Get Deezer album ID
         if "http" in link:
-            album_id = link.split("/")[-1]
+            albumId = link.split("/")[-1]
         else:
-            album_id = link
+            albumId = link
 
-        album = dz.get_album(album_id)
-        album_name = album.title
-        album_artists = ', '.join(str(x) for x in list([contributor.name for contributor in album.contributors]))
-        total_tracks = str(album.nb_tracks)
-        release_date = str(album.release_date)
-        tracks_metadata = album.get_tracks()
+        album = dz.get_album(albumId)
+        albumName = album.title
+        albumArtists = ', '.join(str(x) for x in list([contributor.name for contributor in album.contributors]))
+        totalTracks = str(album.nb_tracks)
+        releaseDate = str(album.release_date)
+        tracksMetadata = album.get_tracks()
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
-        print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
-        print(f"\033[1;33;40mAlbum artist:\033[0m {album_artists}")
-        print(f"\033[1;33;40mRelease date:\033[0m {release_date}")
+        print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
+        print(f"\033[1;33;40mAlbum artist:\033[0m {albumArtists}")
+        print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
@@ -107,38 +107,40 @@ def main():
         confirmation = input("Do you want to continue? (Y/n)\n") or "y"
     else:
         confirmation = "y"
+
     # Start timer for processing time
-    start_time = time.time()
+    startTime = time.time()
+    
     if confirmation.lower() == "y":
         if "spotify" in link:
-            for track_metadata, flac_file in tqdm(zip(tracks_metadata, flac_files), total=len(tracks_metadata), desc="Processing files"):
+            for trackMetadata, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
-                audio['album'] = album_name
-                audio["ARTIST"] = [artist['name'] for artist in track_metadata['artists']]
-                audio['title'] = track_metadata['name']
-                audio["ALBUMARTIST"] = album_artists
-                audio['date'] = release_date
-                audio['tracktotal'] = total_tracks
-                audio['discnumber'] = str(track_metadata['disc_number'])
-                audio['tracknumber'] = str(track_metadata['track_number'])
+                audio['album'] = albumName
+                audio["ARTIST"] = [artist['name'] for artist in trackMetadata['artists']]
+                audio['title'] = trackMetadata['name']
+                audio["ALBUMARTIST"] = albumArtists
+                audio['date'] = releaseDate
+                audio['tracktotal'] = totalTracks
+                audio['discnumber'] = str(trackMetadata['disc_number'])
+                audio['tracknumber'] = str(trackMetadata['track_number'])
                 audio.save()
         elif "deezer" in link:
-            for track, flac_file in tqdm(zip(tracks_metadata, flac_files), total=len(tracks_metadata), desc="Processing files"):
+            for track, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
-                audio['album'] = album_name
+                audio['album'] = albumName
                 audio["ARTIST"] = [contributor.name for contributor in track.contributors]
                 audio['title'] = track.title
-                audio["ALBUMARTIST"] = album_artists
-                audio['date'] = release_date
-                audio['tracktotal'] = total_tracks
+                audio["ALBUMARTIST"] = albumArtists
+                audio['date'] = releaseDate
+                audio['tracktotal'] = totalTracks
                 audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()
 
     # End timer for processing time
-    end_time = time.time()
+    endTime = time.time()
     
-    print(f"Metadata successfully applied!\nTotal time taken: {end_time - start_time:.2f} seconds")
+    print(f"Metadata successfully applied!\nTotal time taken: {endTime - startTime:.2f} seconds")
     input("Press Enter to exit...")
 
 if __name__ == "__main__":

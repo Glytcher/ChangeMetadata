@@ -76,7 +76,7 @@ def main():
         
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
-        print(f"\033[1;33;40mAlbum artist:\033[0m {', '.join(albumArtists)}")
+        print(f"\033[1;33;40mAlbum artist(s):\033[0m {', '.join(albumArtists)}")
         print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
     
     elif "deezer" in link:
@@ -95,12 +95,16 @@ def main():
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {albumName}")
-        print(f"\033[1;33;40mAlbum artist:\033[0m {albumArtists}")
+        print(f"\033[1;33;40mAlbum artist(s):\033[0m {albumArtists}")
         print(f"\033[1;33;40mRelease date:\033[0m {releaseDate}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
         sys.exit()
+
+    # Check total tracks and FLAC files in folder to check if they match
+    if len(tracksMetadata) != len(flacFiles):
+        print(f"\033[91mNote:\033[0m         Total tracks in given album ({len(tracksMetadata)}) does not match total FLAC files in folder ({len(flacFiles)})")
 
     # Check config file if user should be asked for confirmation
     if config['Options']['alwaysAskForConformation']:

@@ -62,5 +62,5 @@ Features to add/bugs to fix, in no particular order:
 - [x] Add support for Deezer
 - [x] Add disc metadata
 - [ ] Make the config file optional, since you dont need credentials for Deezer
-- [ ] Handle extended/alternative versions of albums not available on Spotify or Deezer
+- [x] Handle extended/alternative versions of albums not available on Spotify or Deezer
 - [ ] Add support for MP3 files

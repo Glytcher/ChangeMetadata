@@ -73,7 +73,6 @@ def main():
         total_tracks = str(album_metadata['total_tracks'])
         album_artists = [artist['name'] for artist in album_metadata['artists']]
         release_date = album_metadata['release_date']
-        disc_number = str(track_metadata['disc_number'])
         
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
         print(f"\033[1;33;40mAlbum name:  \033[0m {album_name}")
@@ -90,8 +89,8 @@ def main():
         album = dz.get_album(album_id)
         album_name = album.title
         album_artists = ', '.join(str(x) for x in list([contributor.name for contributor in album.contributors]))
-        total_tracks = album.nb_tracks
-        release_date = album.release_date
+        total_tracks = str(album.nb_tracks)
+        release_date = str(album.release_date)
         tracks_metadata = album.get_tracks()
 
         print(f"\033[1;32;40mThe following metadata will be applied:\033[0m")
@@ -120,7 +119,7 @@ def main():
                 audio["ALBUMARTIST"] = album_artists
                 audio['date'] = release_date
                 audio['tracktotal'] = total_tracks
-                audio['discnumber'] = disc_number
+                audio['discnumber'] = str(track_metadata['disc_number'])
                 audio['tracknumber'] = str(track_metadata['track_number'])
                 audio.save()
         elif "deezer" in link:
@@ -130,8 +129,8 @@ def main():
                 audio["ARTIST"] = [contributor.name for contributor in track.contributors]
                 audio['title'] = track.title
                 audio["ALBUMARTIST"] = album_artists
-                audio['date'] = str(release_date)
-                audio['tracktotal'] = str(total_tracks)
+                audio['date'] = release_date
+                audio['tracktotal'] = total_tracks
                 audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()

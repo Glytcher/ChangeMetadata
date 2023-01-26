@@ -15,7 +15,7 @@ def main():
     # Spotify API Credentials
     with open('config.toml', 'r') as f:
         config = toml.load(f)
-
+    
     clientId = config['SpotifyAPI']['clientId']
     clientSecret = config['SpotifyAPI']['clientSecret']
 
@@ -136,7 +136,11 @@ def main():
                 audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()
-
+    else:
+        print("Aborted")
+        input("Press Enter to exit...")
+        sys.exit()
+        
     # End timer for processing time
     endTime = time.time()
     

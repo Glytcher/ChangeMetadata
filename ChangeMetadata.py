@@ -13,12 +13,14 @@ from mutagen.flac import FLAC
 
 def main():
     # Spotify API Credentials
-    with open('config.toml', 'r') as f:
-        config = toml.load(f)
-    
-    clientId = config['SpotifyAPI']['clientId']
-    clientSecret = config['SpotifyAPI']['clientSecret']
-
+    try:
+        with open('config.toml', 'r') as f:
+            config = toml.load(f)
+    except FileNotFoundError:
+        print("\033[91mError:\033[0m config.toml not found. Please create a config.toml file in the same folder as this script.")
+        input("Press Enter key to exit...")
+        sys.exit()
+        
     # Check if system arguments are provided
     if len(sys.argv) < 2:
         print("Error: Please provide a folder as a command line argument. You can do this by dragging and dropping a folder onto the python file.")
@@ -34,10 +36,6 @@ def main():
         input("Press Enter key to exit...")
         sys.exit()
 
-    # Setup Spotify API using Spotipy and Deezer API client using Deezer-Python
-    sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(clientId, clientSecret))
-    dz = Client()
-
     # Print current folder and total FLAC files in folder
     print(f"\033[1;32;40mCurrent folder:\033[0m {(folder.split(chr(92))[-1])}")
 
@@ -47,10 +45,14 @@ def main():
     # Check if link is valid and check for Spotify or Deezer
     if "spotify" in link:
         # Check if clientId and clientSecret are provided
+        clientId = config['SpotifyAPI']['clientId']
+        clientSecret = config['SpotifyAPI']['clientSecret']
         if not clientId or not clientSecret:
-            print("Error: Spotify clientId and/or clientSecret empty")
+            print("\033[91mError:\033[0m Spotify clientId and/or clientSecret not found in config.toml")
             input("Press Enter key to exit...")
             sys.exit()
+
+        sp = spotipy.Spotify(auth_manager=SpotifyClientCredentials(clientId, clientSecret))
 
         # Retrieve Spotify metadata
         try:
@@ -84,6 +86,7 @@ def main():
         print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
         print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
     elif "deezer" in link:
+        dz = Client()
         # Get Deezer album ID
         if "http" in link:
             albumId = link.split("/")[-1]

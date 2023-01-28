@@ -84,7 +84,8 @@ def main():
         print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {', '.join(albumArtists)}")
         print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
-        print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
+        if int(totalDiscs) > 1:
+            print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
     elif "deezer" in link:
         dz = Client()
         # Get Deezer album ID
@@ -105,7 +106,8 @@ def main():
         print(f"\033[1;33;40mAlbum name:     \033[0m {albumName}")
         print(f"\033[1;33;40mAlbum artist(s):\033[0m {albumArtists}")
         print(f"\033[1;33;40mRelease date:   \033[0m {releaseDate}")
-        print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
+        if int(totalDiscs) > 1:
+            print(f"\033[1;33;40mTotal discs:    \033[0m {totalDiscs}")
     else:
         print("Invalid link. Please provide a valid Spotify or Deezer link.")
         input("Press Enter to exit...")
@@ -129,28 +131,30 @@ def main():
             for trackMetadata, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
                 audio.pop('year', None)
+                if int(totalDiscs) > 1:
+                    audio['totaldiscs'] = totalDiscs
+                    audio['discnumber'] = str(trackMetadata['disc_number'])
                 audio['album'] = albumName
                 audio["ARTIST"] = [artist['name'] for artist in trackMetadata['artists']]
                 audio['title'] = trackMetadata['name']
                 audio["albumartist"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
-                audio['totaldiscs'] = totalDiscs
-                audio['discnumber'] = str(trackMetadata['disc_number'])
                 audio['tracknumber'] = str(trackMetadata['track_number'])
                 audio.save()
         elif "deezer" in link:
             for track, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
                 audio.pop('year', None)
+                if int(totalDiscs) > 1:
+                    audio['totaldiscs'] = totalDiscs
+                audio['discnumber'] = str(track.disk_number)
                 audio['album'] = albumName
                 audio["artist"] = [contributor.name for contributor in track.contributors]
                 audio['title'] = track.title
                 audio["albumartist"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
-                audio['totaldiscs'] = totalDiscs
-                audio['discnumber'] = str(track.disk_number)
                 audio['tracknumber'] = str(track.track_position)
                 audio.save()
     else:

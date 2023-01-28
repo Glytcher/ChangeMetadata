@@ -128,10 +128,11 @@ def main():
         if "spotify" in link:
             for trackMetadata, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
+                audio.pop('year', None)
                 audio['album'] = albumName
                 audio["ARTIST"] = [artist['name'] for artist in trackMetadata['artists']]
                 audio['title'] = trackMetadata['name']
-                audio["ALBUMARTIST"] = albumArtists
+                audio["albumartist"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
                 audio['totaldiscs'] = totalDiscs
@@ -141,10 +142,11 @@ def main():
         elif "deezer" in link:
             for track, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
+                audio.pop('year', None)
                 audio['album'] = albumName
-                audio["ARTIST"] = [contributor.name for contributor in track.contributors]
+                audio["artist"] = [contributor.name for contributor in track.contributors]
                 audio['title'] = track.title
-                audio["ALBUMARTIST"] = albumArtists
+                audio["albumartist"] = albumArtists
                 audio['date'] = releaseDate
                 audio['tracktotal'] = totalTracks
                 audio['totaldiscs'] = totalDiscs

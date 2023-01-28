@@ -148,7 +148,7 @@ def main():
                 audio.pop('year', None)
                 if int(totalDiscs) > 1:
                     audio['totaldiscs'] = totalDiscs
-                audio['discnumber'] = str(track.disk_number)
+                    audio['discnumber'] = str(track.disk_number)
                 audio['album'] = albumName
                 audio["artist"] = [contributor.name for contributor in track.contributors]
                 audio['title'] = track.title

@@ -131,8 +131,10 @@ def main():
             for trackMetadata, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
                 audio.pop('year', None)
+                audio.pop('discnumber', None)
+                audio.pop('disctotal', None)
                 if int(totalDiscs) > 1:
-                    audio['totaldiscs'] = totalDiscs
+                    audio['disctotal'] = totalDiscs
                     audio['discnumber'] = str(trackMetadata['disc_number'])
                 audio['album'] = albumName
                 audio["ARTIST"] = [artist['name'] for artist in trackMetadata['artists']]
@@ -146,8 +148,10 @@ def main():
             for track, flac_file in tqdm(zip(tracksMetadata, flacFiles), total=len(tracksMetadata), desc="Processing files"):
                 audio = mutagen.flac.FLAC(flac_file)
                 audio.pop('year', None)
+                audio.pop('discnumber', None)
+                audio.pop('disctotal', None)
                 if int(totalDiscs) > 1:
-                    audio['totaldiscs'] = totalDiscs
+                    audio['disctotal'] = totalDiscs
                     audio['discnumber'] = str(track.disk_number)
                 audio['album'] = albumName
                 audio["artist"] = [contributor.name for contributor in track.contributors]

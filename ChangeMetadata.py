@@ -133,6 +133,7 @@ def main():
                 audio.pop('year', None)
                 audio.pop('discnumber', None)
                 audio.pop('disctotal', None)
+                audio.pop('totaldiscs', None)
                 if int(totalDiscs) > 1:
                     audio['disctotal'] = totalDiscs
                     audio['discnumber'] = str(trackMetadata['disc_number'])
@@ -150,6 +151,7 @@ def main():
                 audio.pop('year', None)
                 audio.pop('discnumber', None)
                 audio.pop('disctotal', None)
+                audio.pop('totaldiscs', None)
                 if int(totalDiscs) > 1:
                     audio['disctotal'] = totalDiscs
                     audio['discnumber'] = str(track.disk_number)

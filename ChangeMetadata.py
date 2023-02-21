@@ -68,7 +68,12 @@ def main():
         if 'album' in link:
             albumMetadata = sp.album(link)
             albumName = albumMetadata['name']
-            tracksMetadata = albumMetadata['tracks']['items']
+            tracksMetadata = []
+            trackResults = sp.album_tracks(link, limit=50)
+            tracksMetadata.extend(trackResults['items'])
+            while trackResults['next']:
+                trackResults = sp.next(trackResults)
+                tracksMetadata.extend(trackResults['items'])
         else:
             trackMetadata = sp.track(link)
             albumMetadata = sp.album(trackMetadata['album']['id'])

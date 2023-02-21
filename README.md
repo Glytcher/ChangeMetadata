@@ -54,14 +54,4 @@ You can configure the script by editing the `config.toml` file. The following op
 
 ## Notes
 
-- Only tested on Windows with Python 3.9.5
-
-## Todo
-
-Features to add/bugs to fix, in no particular order:
-
-- [x] Add support for Deezer
-- [x] Add disc metadata
-- [ ] Make the config file optional, since you dont need credentials for Deezer
-- [x] Handle extended/alternative versions of albums not available on Spotify or Deezer
-- [ ] Add support for MP3 files
+- Only tested on Windows 10 with Python 3.9.5

@@ -2,4 +2,4 @@ mutagen==1.47.0
 spotipy==2.23.0
 toml==0.10.2
 tqdm==4.66.1
-deezer-python==6.1.0
+deezer-python==6.1.1
